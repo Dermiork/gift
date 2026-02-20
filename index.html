@@ -288,7 +288,7 @@
           <p>
             Я кое-что спрятал ниже… если найдёшь — скажи мне номер 😉
           </p>
-          <div class="reveal" style="margin-top:12px">
+          <div class="reveal" id="questBox" style="margin-top:12px">
             <div class="type" id="quest">
 1) улыбнись сейчас
 2) сделай вдох
@@ -522,6 +522,7 @@ function startMusicWithDelay(delayMs = 2200, targetVol = 0.22) {
 openGift.addEventListener("click", () => {
   startMusicWithDelay(2200, 0.22);
   burstHearts(22);
+  document.getElementById("questBox")?.classList.add("show");
   window.scrollTo({top: document.body.scrollHeight * 0.25, behavior:"smooth"});
   typewrite(MAIN_TEXT);
 });
@@ -541,21 +542,20 @@ openGift.addEventListener("click", () => {
     // Нежный фон: иногда “всплывает” сердечко
     setInterval(() => spawnHeart(), 9500);
 
-    toggleMusic.addEventListener("click", async () => {
-      try{
-        if (!musicOn){
-          await audio.play();
-          musicOn = true;
-          toggleMusic.textContent = "♫ on";
-        } else {
-          audio.pause();
-          musicOn = false;
-          toggleMusic.textContent = "♫";
-        }
-      }catch(e){
-        alert("Если хочешь музыку: положи рядом music.mp3 и включи снова 🙂");
-      }
-    });
+toggleMusic.addEventListener("click", async () => {
+  try{
+    if (audio.paused){
+      await audio.play();
+      toggleMusic.textContent = "♫ on";
+    } else {
+      audio.pause();
+      toggleMusic.textContent = "♫";
+    }
+  }catch(e){
+    alert("Музыка не загрузилась 🙂");
+  }
+});
+
   </script>
 </body>
 </html>
