@@ -220,7 +220,31 @@
     @media (prefers-reduced-motion: reduce){
       #hearts{display:none}
     }
-
+/* Toast (секретное сообщение) */
+#toast{
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  transform: translateX(-50%) translateY(18px);
+  background: linear-gradient(135deg, rgba(255,77,141,.92), rgba(124,77,255,.92));
+  color: #fff;
+  padding: 12px 14px;
+  border-radius: 16px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.45);
+  border: 1px solid rgba(255,255,255,.22);
+  font-weight: 650;
+  letter-spacing: .2px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 60;
+  max-width: min(92vw, 520px);
+  text-align: center;
+}
+#toast.show{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity .2s ease, transform .2s ease;
+}
   </style>
 </head>
 <body>
@@ -255,6 +279,7 @@
             <span class="chip">немного флирта 😏</span>
             <span class="chip">много нежности</span>
             <span class="chip">и ты — самая красивая</span>
+            <button class="chip" id="beautyBtn" type="button" style="cursor:pointer">нажми если ты самая красивая</button>
           </div>
 
           <div class="hint">
@@ -356,6 +381,8 @@
 <footer>
       Сделано с чувствами к тебе ❤️
     </footer>
+    <!-- Секретное сообщение (тост) -->
+<div id="toast" aria-live="polite">Ты нашла секретный уровень моей любви ❤️</div>
   </div>
 
   <audio id="bgm" loop>
@@ -405,7 +432,47 @@
     const openGift = document.getElementById("openGift");
     const copyLink = document.getElementById("copyLink");
     const toggleMusic = document.getElementById("toggleMusic");
+    const beautyBtn = document.getElementById("beautyBtn");
+
+beautyBtn?.addEventListener("click", () => {
+  burstHearts?.(14);
+  showToast("подтверждено ✔ 😌");
+});
     const audio = document.getElementById("bgm");
+    // ===== Secret: 5 taps anywhere =====
+const toast = document.getElementById("toast");
+let tapCount = 0;
+let tapTimer = null;
+
+function showToast(text){
+  if(!toast) return;
+  toast.textContent = text;
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"), 2400);
+}
+
+function registerTap(){
+  tapCount++;
+  clearTimeout(tapTimer);
+  tapTimer = setTimeout(()=> tapCount = 0, 1200); // если пауза — сброс
+
+  if (tapCount >= 3){
+    tapCount = 0;
+    burstHearts?.(18);
+    showToast("Ты нашла секретный уровень моей любви ❤️");
+  }
+}
+
+// учитываем и мышь, и тап
+document.addEventListener("click", (e) => {
+  // чтобы не срабатывало на кнопках слишком легко — можно оставить, но я ограничу:
+  if (e.target.closest("button")) return;
+  registerTap();
+});
+document.addEventListener("touchend", (e) => {
+  if (e.target.closest("button")) return;
+  registerTap();
+}, {passive:true});
 let musicStarted = false;
 
 function startMusicWithDelay(delayMs = 2200, targetVol = 0.22) {
@@ -469,6 +536,26 @@ function startMusicWithDelay(delayMs = 2200, targetVol = 0.22) {
       }
     }
 
+    // ===== Hearts follow finger =====
+let lastHeartAt = 0;
+function heartTrail(x, y){
+  const now = Date.now();
+  if (now - lastHeartAt < 70) return; // ограничение частоты
+  lastHeartAt = now;
+  spawnHeart(x, y);
+}
+
+document.addEventListener("pointermove", (e) => {
+  // на телефоне pointermove тоже работает, но иногда лучше touchmove
+  if (e.pointerType === "mouse") return; // на ПК не спамим
+  heartTrail(e.clientX, e.clientY);
+}, {passive:true});
+
+document.addEventListener("touchmove", (e) => {
+  const t = e.touches && e.touches[0];
+  if (!t) return;
+  heartTrail(t.clientX, t.clientY);
+}, {passive:true});
 
 
     herNameEl.textContent = HER_NAME;
