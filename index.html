@@ -299,7 +299,7 @@
           </div>
         </div>
 
-        <div class="card full">
+        <div class="card full" id="messageBlock">
           <h2>То, что я правда хочу сказать</h2>
           <p>Нажми кнопку — я скажу тебе кое-что важное.</p>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
@@ -523,7 +523,10 @@ openGift.addEventListener("click", () => {
   startMusicWithDelay(2200, 0.22);
   burstHearts(22);
   document.getElementById("questBox")?.classList.add("show");
-  window.scrollTo({top: document.body.scrollHeight * 0.25, behavior:"smooth"});
+  document.getElementById("messageBlock").scrollIntoView({
+  behavior: "smooth",
+  block: "start"
+});
   typewrite(MAIN_TEXT);
 });
 
