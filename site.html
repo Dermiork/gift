@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>С Днём рождения, моя ♥</title>
+  <style>
+    :root{
+      --bg1:#0b0b14;
+      --bg2:#141428;
+      --card:#ffffff10;
+      --card2:#ffffff14;
+      --text:#f6f6ff;
+      --muted:#c9c9ffcc;
+      --accent:#ff4d8d;
+      --accent2:#7c4dff;
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(1200px 800px at 20% 10%, #ff4d8d33, transparent 60%),
+        radial-gradient(900px 700px at 80% 30%, #7c4dff2e, transparent 60%),
+        radial-gradient(700px 600px at 50% 90%, #25d0ff22, transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) 60px calc(16px + env(safe-area-inset-left))}
+    header{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      margin:10px 0 22px;
+      flex-wrap:wrap;
+    }
+    @media (max-width:520px){
+      header{justify-content:center}
+      .brand{width:100%;justify-content:center}
+      .pill{width:100%;justify-content:center;flex-wrap:wrap}
+      button, .btn{padding:11px 12px;border-radius:14px;font-size:14px}
+      .btn-ghost{font-size:14px}
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;
+      padding:12px 14px;border-radius:999px;background:var(--card);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+    .dot{width:12px;height:12px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--accent) 55%, #0000 70%);
+      box-shadow:0 0 18px #ff4d8d66;
+    }
+    .brand strong{letter-spacing:.2px}
+    .pill{
+      padding:10px 12px;border-radius:999px;background:var(--card);
+      backdrop-filter: blur(10px);
+      display:flex;gap:10px;align-items:center;
+      box-shadow: var(--shadow);
+    }
+    button, .btn{
+      cursor:pointer;
+      border:0;
+      color:var(--text);
+      padding:11px 14px;
+      border-radius:14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 14px 40px rgba(255,77,141,.25);
+      font-weight:650;
+      letter-spacing:.2px;
+      transition: transform .12s ease, filter .12s ease;
+    }
+    button:hover, .btn:hover{transform:translateY(-1px);filter:saturate(1.06)}
+    button:active, .btn:active{transform:translateY(0px);filter:saturate(1.0)}
+    .btn-ghost{
+      background:transparent;border:1px solid #ffffff24;
+      box-shadow:none;
+    }
+    .hero{
+      position:relative;
+      padding:28px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    @media (max-width:520px){
+      .hero{padding:18px}
+    }
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;inset:-2px;
+      background: radial-gradient(500px 220px at 20% 20%, #ff4d8d33, transparent 60%),
+                  radial-gradient(500px 260px at 80% 70%, #7c4dff33, transparent 60%);
+      pointer-events:none;
+    }
+    .hero-inner{position:relative;display:grid;grid-template-columns:1.35fr .65fr;gap:18px;align-items:start}
+    @media (max-width:840px){.hero-inner{grid-template-columns:1fr;}}
+    h1{
+      margin:0 0 10px;
+      font-size: clamp(30px, 4.2vw, 52px);
+      line-height:1.06;
+      letter-spacing:-.6px;
+    }
+    .sub{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size: clamp(15px, 1.8vw, 18px);
+      line-height:1.55;
+    }
+    .chips{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0}
+    .chip{
+      padding:8px 10px;border-radius:999px;
+      background:#ffffff10;border:1px solid #ffffff18;
+      color:#ffffffd8;font-size:13px;
+    }
+    .side{
+      display:flex;flex-direction:column;gap:12px;
+      padding:16px;border-radius:18px;background:#ffffff0b;border:1px solid #ffffff14;
+    }
+    .side h3{margin:2px 0 6px;font-size:15px;color:#ffffffdd}
+    .count{
+      font-variant-numeric: tabular-nums;
+      font-size:14px;color:#ffffffd0;line-height:1.35
+    }
+    .grid{
+      display:grid;grid-template-columns:repeat(12, 1fr);gap:14px;
+      margin-top:16px;
+    }
+    .card{
+      grid-column: span 6;
+      padding:18px;border-radius:18px;
+      background: linear-gradient(180deg, #ffffff10, #ffffff0b);
+      border:1px solid #ffffff14;
+      box-shadow: 0 14px 40px rgba(0,0,0,.25);
+    }
+    .card.full{grid-column: span 12}
+    @media (max-width:840px){.card{grid-column: span 12}}
+    .card h2{margin:0 0 10px;font-size:18px}
+    .card p{margin:0;color:var(--muted);line-height:1.6}
+    .reveal{
+      margin-top:14px;
+      padding:14px;
+      border-radius:16px;
+      background:#0c0c18cc;
+      border:1px dashed #ffffff22;
+      display:none;
+    }
+    .reveal.show{display:block;animation: pop .22s ease}
+    @keyframes pop{from{transform:scale(.98);opacity:.4}to{transform:scale(1);opacity:1}}
+    .type{
+      font-size:17px;
+      line-height:1.6;
+      color:#fff;
+      white-space:pre-wrap;
+    }
+    .small{
+      font-size:12.5px;color:#ffffffb8;margin-top:10px
+    }
+    .gallery{
+      display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-top:12px
+    }
+    @media (max-width:840px){.gallery{grid-template-columns:repeat(2,1fr)}}
+    .ph{
+      height:120px;border-radius:16px;
+      background: linear-gradient(135deg, #ffffff12, #ffffff06);
+      border:1px solid #ffffff14;
+      display:flex;align-items:center;justify-content:center;
+      color:#ffffffb8;font-size:13px;
+      position:relative;overflow:hidden;
+    }
+    .ph::after{
+      content:"";
+      position:absolute;inset:-60px;
+      background: radial-gradient(120px 80px at 20% 20%, #ff4d8d22, transparent 60%),
+                  radial-gradient(140px 90px at 80% 70%, #7c4dff22, transparent 60%);
+      transform: rotate(18deg);
+    }
+    footer{
+      margin-top:18px;color:#ffffffaa;font-size:12.5px;text-align:center
+    }
+    .heart{
+      display:inline-block;transform:translateY(1px);
+      filter: drop-shadow(0 6px 18px rgba(255,77,141,.25));
+    }
+    .hint{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:12px 14px;border-radius:16px;
+      background:#ffffff0b;border:1px solid #ffffff14;
+      color:#ffffffc8;font-size:13px;line-height:1.45;
+      margin-top:12px;
+    }
+    .hint b{color:#fff}
+  
+    /* Floating hearts animation */
+    #hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+    .h{
+      position:absolute;
+      font-size:18px;
+      opacity:0;
+      transform: translate(-50%, 0) scale(.9);
+      filter: drop-shadow(0 8px 18px rgba(255,77,141,.18));
+      animation: floatUp 2.6s ease-in forwards;
+      will-change: transform, opacity;
+    }
+    @keyframes floatUp{
+      0%{opacity:0;transform:translate(-50%, 12px) scale(.9) rotate(-6deg)}
+      10%{opacity:1}
+      100%{opacity:0;transform:translate(calc(-50% + var(--dx)), -240px) scale(1.25) rotate(14deg)}
+    }
+    @media (prefers-reduced-motion: reduce){
+      #hearts{display:none}
+    }
+
+  </style>
+</head>
+<body>
+  <div id="hearts" aria-hidden="true"></div>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <span class="dot"></span>
+        <div>
+          <strong>Мини‑сайт‑подарок</strong><br>
+          <span style="font-size:12.5px;color:var(--muted)">сделано одним влюблённым человеком</span>
+        </div>
+      </div>
+
+      <div class="pill">
+        <button class="btn-ghost" id="toggleMusic" title="Музыка (необязательно)">♫</button>
+        <button id="copyLink" class="btn-ghost" title="Скопировать текст-поздравление">Копировать</button>
+        <button id="openGift">Открыть подарок</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <h1>С днём рождения, <span id="herName">Солнышко</span> <span class="heart">♥</span></h1>
+          <p class="sub">
+            Я хотел сделать тебе подарок, который можно почувствовать даже на расстоянии.
+            Нажми <b>«Открыть подарок»</b> — и я скажу самое важное 🙂
+          </p>
+
+          <div class="chips">
+            <span class="chip">немного флирта 😏</span>
+            <span class="chip">много нежности</span>
+            <span class="chip">и ты — самая красивая</span>
+          </div>
+
+          <div class="hint">
+            <div>💡</div>
+            <div>
+              <b>Небольшая подсказка:</b><br>
+              я делал это специально для тебя и немного волновался, понравится ли тебе 🙂
+            </div>
+          </div>
+        </div>
+
+        <aside class="side">
+          <h3>Сколько раз я сегодня подумал о тебе</h3>
+          <div class="count" id="countText">—</div>
+          <div class="small">спойлер: слишком много раз 😌</div>
+        </aside>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2>Три причины, почему ты особенная</h2>
+          <p id="reasons">
+            1) Ты умеешь делать мой день лучше одним сообщением.<br>
+            2) С тобой даже расстояние выглядит временным.<br>
+            3) Ты — моя любимая мысль.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>Мини‑квест (для флирта)</h2>
+          <p>
+            Я кое-что спрятал ниже… если найдёшь — скажи мне номер 😉
+          </p>
+          <div class="reveal" style="display:block;margin-top:12px">
+            <div class="type" id="quest">
+1) улыбнись сейчас
+2) сделай вдох
+3) представь, что я рядом
+4) …поцелуй 💋
+5) напиши мне «нашла»
+            </div>
+          </div>
+        </div>
+
+        <div class="card full">
+          <h2>То, что я правда хочу сказать</h2>
+          <p>Нажми кнопку — я скажу тебе кое-что важное.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+            <button id="revealBtn">Показать</button>
+            <button class="btn-ghost" id="revealFast">Показать сразу</button>
+          </div>
+          <div class="reveal" id="revealBox">
+            <div class="type" id="typed"></div>
+            <div class="small" id="signature"></div>
+          </div>
+        </div>
+
+        <div class="card full">
+          <h2>Наши моменты</h2>
+          <div class="gallery">
+            <div class="ph">Фото 1</div>
+            <div class="ph">Фото 2</div>
+            <div class="ph">Фото 3</div>
+            <div class="ph">Фото 4</div>
+            <div class="ph">Фото 5</div>
+            <div class="ph">Фото 6</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+<div style="text-align:center;margin-top:30px">
+  <div style="
+    display:inline-block;
+    padding:14px 22px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#ff4d8d,#7c4dff);
+    font-weight:700;
+    letter-spacing:.3px;
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+  ">
+    Сделано специально для тебя ❤️
+  </div>
+</div>
+
+<footer>
+      Сделано с чувствами к тебе ❤️
+    </footer>
+  </div>
+
+  <audio id="bgm" loop>
+    <!--
+      Музыка по желанию:
+      1) положи рядом с этим файлом mp3 с названием music.mp3
+      2) раскомментируй строку ниже (удали <!-- и --> вокруг source)
+    -->
+    <!-- <source src="music.mp3" type="audio/mpeg"> -->
+  </audio>
+
+  <script>
+    // =======================
+    // Быстрая персонализация:
+    // =======================
+    const HER_NAME = "Солнышко";          // <-- имя девушки
+    const YOUR_NAME = "Твой буська)";
+    const AUTHOR_NAME = "Андрей";             // <-- подпись (можно имя)
+    const MET_DATE = "2026-02-09";        // <-- дата знакомства (YYYY-MM-DD) или любая важная дата
+
+    // Текст, который будет печататься:
+    const MAIN_TEXT = [
+      "Солнышко, с днём рождения…",
+      "",
+      "Мы вместе совсем недавно, но ты уже успела стать моим любимым «сегодня».",
+      "Мне нравится в тебе всё: твоя романтика, твой стиль, твой характер —",
+      "и то, как ты умеешь делать обычные вещи особенными.",
+      "",
+      "Я хочу, чтобы сегодня ты чувствовала это максимально ясно:",
+      "ты важна. ты желанна. ты невероятно красивая.",
+      "",
+      "И да…",
+      "когда мы увидимся, я заберу у тебя не один настоящий поцелуй 😏💋"
+    ].join("\n");
+
+// =======================
+    // Логика страницы:
+    // =======================
+    const herNameEl = document.getElementById("herName");
+    const authorEl = document.getElementById("authorName");
+    const countText = document.getElementById("countText");
+    const revealBtn = document.getElementById("revealBtn");
+    const revealFast = document.getElementById("revealFast");
+    const revealBox = document.getElementById("revealBox");
+    const typedEl = document.getElementById("typed");
+    const signatureEl = document.getElementById("signature");
+    const openGift = document.getElementById("openGift");
+    const copyLink = document.getElementById("copyLink");
+    const toggleMusic = document.getElementById("toggleMusic");
+    const audio = document.getElementById("bgm");
+
+    // Hearts ✨
+    const heartsLayer = document.getElementById("hearts");
+    function spawnHeart(x=null, y=null){
+      if(!heartsLayer) return;
+      const h = document.createElement("div");
+      h.className = "h";
+      h.textContent = "❤";
+      const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      const left = (x === null) ? Math.random()*vw : x;
+      const top  = (y === null) ? vh - 24 : y;
+      const dx = (Math.random()*140 - 70).toFixed(0) + "px";
+      const size = (14 + Math.random()*16).toFixed(0) + "px";
+      h.style.left = left + "px";
+      h.style.top = top + "px";
+      h.style.setProperty("--dx", dx);
+      h.style.fontSize = size;
+      heartsLayer.appendChild(h);
+      setTimeout(()=> h.remove(), 2800);
+    }
+    function burstHearts(count=18){
+      const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      const cx = vw * (0.5 + (Math.random()*0.08 - 0.04));
+      const cy = vh * 0.78;
+      for(let i=0;i<count;i++){
+        setTimeout(()=> spawnHeart(cx + (Math.random()*80-40), cy + (Math.random()*20-10)), i*35);
+      }
+    }
+
+
+
+    herNameEl.textContent = HER_NAME;
+    if(authorEl) authorEl.textContent = AUTHOR_NAME;
+
+    function daysSince(dateStr){
+      const d = new Date(dateStr + "T00:00:00");
+      const now = new Date();
+      const diff = now - d;
+      if (isNaN(diff)) return null;
+      return Math.max(0, Math.floor(diff / (1000*60*60*24)));
+    }
+
+    const ds = daysSince(MET_DATE);
+    if (ds === null) {
+      countText.textContent = "Я думаю о тебе: бесконечно.";
+    } else {
+      countText.textContent = `Я думаю о тебе уже ${ds} дн. (и это только начало)`;
+    }
+
+    let typing = false;
+    function typewrite(text, speed=18){
+      if (typing) return;
+      typing = true;
+      revealBox.classList.add("show");
+      typedEl.textContent = "";
+      signatureEl.textContent = "";
+      let i = 0;
+      const tick = () => {
+        typedEl.textContent = text.slice(0, i);
+        i++;
+        if (i <= text.length){
+          setTimeout(tick, speed);
+        } else {
+          typing = false;
+          signatureEl.textContent = `— ${YOUR_NAME} ♥`;
+        }
+      };
+      tick();
+    }
+
+    function showInstant(text){
+      revealBox.classList.add("show");
+      typedEl.textContent = text;
+      signatureEl.textContent = `— ${YOUR_NAME} ♥`;
+      typing = false;
+    }
+
+    revealBtn.addEventListener("click", () => { burstHearts(14); typewrite(MAIN_TEXT); });
+    revealFast.addEventListener("click", () => { burstHearts(10); showInstant(MAIN_TEXT); });
+    openGift.addEventListener("click", () => {
+      burstHearts(22);
+
+      window.scrollTo({top: document.body.scrollHeight * 0.25, behavior:"smooth"});
+      typewrite(MAIN_TEXT);
+    });
+
+    copyLink.addEventListener("click", async () => {
+      const msg = `С днём рождения, ${HER_NAME}! ♥\\n\\n${MAIN_TEXT}\\n\\n— ${YOUR_NAME}`;
+      try{
+        await navigator.clipboard.writeText(msg);
+        copyLink.textContent = "Скопировано!";
+        setTimeout(()=> copyLink.textContent="Копировать", 1400);
+      }catch(e){
+        alert("Не удалось скопировать. Можно выделить текст вручную 🙂");
+      }
+    });
+
+    let musicOn = false;
+    // Нежный фон: иногда “всплывает” сердечко
+    setInterval(() => spawnHeart(), 9500);
+
+    toggleMusic.addEventListener("click", async () => {
+      try{
+        if (!musicOn){
+          await audio.play();
+          musicOn = true;
+          toggleMusic.textContent = "♫ on";
+        } else {
+          audio.pause();
+          musicOn = false;
+          toggleMusic.textContent = "♫";
+        }
+      }catch(e){
+        alert("Если хочешь музыку: положи рядом music.mp3 и включи снова 🙂");
+      }
+    });
+  </script>
+</body>
+</html>
