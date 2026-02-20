@@ -406,7 +406,38 @@
     const copyLink = document.getElementById("copyLink");
     const toggleMusic = document.getElementById("toggleMusic");
     const audio = document.getElementById("bgm");
-    audio.volume = 0.25;
+let musicStarted = false;
+
+function startMusicWithDelay(delayMs = 2200, targetVol = 0.22) {
+  if (!audio || musicStarted) return;
+  musicStarted = true;
+
+  audio.volume = 0;
+
+  // запускаем сразу (важно для iPhone)
+  audio.play().catch(()=>{
+    musicStarted = false;
+    return;
+  });
+
+  // а звук появится позже
+  setTimeout(() => {
+
+    let v = 0;
+    const step = 0.008;
+    const tickMs = 120;
+
+    const fade = setInterval(() => {
+      v = Math.min(targetVol, v + step);
+      audio.volume = v;
+
+      if (v >= targetVol) clearInterval(fade);
+    }, tickMs);
+
+  }, delayMs);
+}
+
+
 
     // Hearts ✨
     const heartsLayer = document.getElementById("hearts");
@@ -488,12 +519,12 @@
 
     revealBtn.addEventListener("click", () => { burstHearts(14); typewrite(MAIN_TEXT); });
     revealFast.addEventListener("click", () => { burstHearts(10); showInstant(MAIN_TEXT); });
-    openGift.addEventListener("click", () => {
-      burstHearts(22);
-
-      window.scrollTo({top: document.body.scrollHeight * 0.25, behavior:"smooth"});
-      typewrite(MAIN_TEXT);
-    });
+openGift.addEventListener("click", () => {
+  startMusicWithDelay(2200, 0.22);
+  burstHearts(22);
+  window.scrollTo({top: document.body.scrollHeight * 0.25, behavior:"smooth"});
+  typewrite(MAIN_TEXT);
+});
 
     copyLink.addEventListener("click", async () => {
       const msg = `С днём рождения, ${HER_NAME}! ♥\\n\\n${MAIN_TEXT}\\n\\n— ${YOUR_NAME}`;
