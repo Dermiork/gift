@@ -456,7 +456,7 @@ function registerTap(){
   clearTimeout(tapTimer);
   tapTimer = setTimeout(()=> tapCount = 0, 1200); // если пауза — сброс
 
-  if (tapCount >= 3){
+  if (tapCount >= 5){
     tapCount = 0;
     burstHearts?.(18);
     showToast("Ты нашла секретный уровень моей любви ❤️");
