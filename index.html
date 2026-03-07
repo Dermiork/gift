@@ -620,42 +620,49 @@ html, body{
     const signatureEl = document.getElementById("signature");
     const openGift = document.getElementById("openGift");
     const copyLink = document.getElementById("copyLink");
-    const toggleMusic = document.getElementById("toggleMusic");
-    const beautyBtn = document.getElementById("beautyBtn");
+   const toggleMusic = document.getElementById("toggleMusic");
+const beautyBtn = document.getElementById("beautyBtn");
+const audio = document.getElementById("bgm");
+const launchScreen = document.getElementById("launchScreen");
 
-  function showPage(pageId, btn = null) {
-    const pages = document.querySelectorAll('.page');
-    const buttons = document.querySelectorAll('.tab-btn');
+function showPage(pageId, btn = null) {
+  const pages = document.querySelectorAll('.page');
+  const buttons = document.querySelectorAll('.tab-btn');
 
-    pages.forEach(page => page.classList.remove('active'));
-    buttons.forEach(button => button.classList.remove('active'));
+  pages.forEach(page => page.classList.remove('active'));
+  buttons.forEach(button => button.classList.remove('active'));
 
-    const activePage = document.getElementById(pageId);
-    if (activePage) {
-      activePage.classList.add('active');
-    }
-
-    if (btn) {
-      btn.classList.add('active');
-    } else {
-      const pageOrder = ['birthdayPage', 'marchPage'];
-      const index = pageOrder.indexOf(pageId);
-      if (index !== -1 && buttons[index]) {
-        buttons[index].classList.add('active');
-      }
-    }
+  const activePage = document.getElementById(pageId);
+  if (activePage) {
+    activePage.classList.add('active');
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const activePage = document.querySelector('.page.active');
-
-    if (activePage) {
-      showPage(activePage.id);
-    } else {
-      showPage('birthdayPage');
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    const pageOrder = ['birthdayPage', 'marchPage'];
+    const index = pageOrder.indexOf(pageId);
+    if (index !== -1 && buttons[index]) {
+      buttons[index].classList.add('active');
     }
-  });
+  }
+}
 
+function hideLaunchScreen() {
+  launchScreen?.classList.add("hide");
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(hideLaunchScreen, 1300);
+
+  const activePage = document.querySelector('.page.active');
+
+  if (activePage) {
+    showPage(activePage.id);
+  } else {
+    showPage('birthdayPage');
+  }
+});
 
 const isStandalone =
   window.matchMedia('(display-mode: standalone)').matches ||
