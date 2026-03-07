@@ -94,16 +94,21 @@
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    @media (max-width:520px){
-      .hero{padding:18px}
-      
-    .hero::before{
-      content:"";
-      position:absolute;inset:-2px;
-      background: radial-gradient(500px 220px at 20% 20%, #ff4d8d33, transparent 60%),
-                  radial-gradient(500px 260px at 80% 70%, #7c4dff33, transparent 60%);
-      pointer-events:none;
-    }
+   @media (max-width:520px){
+  .hero{
+    padding:18px;
+  }
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:
+    radial-gradient(500px 220px at 20% 20%, #ff4d8d33, transparent 60%),
+    radial-gradient(500px 260px at 80% 70%, #7c4dff33, transparent 60%);
+  pointer-events:none;
+}
     .hero-inner{position:relative;display:grid;grid-template-columns:1.35fr .65fr;gap:18px;align-items:start}
     @media (max-width:840px){.hero-inner{grid-template-columns:1fr;}}
     h1{
@@ -389,7 +394,7 @@ html, body{
   <button class="tab-btn active" type="button" onclick="showPage('birthdayPage', this)">День рождения</button>
   <button class="tab-btn" type="button" onclick="showPage('marchPage', this)">8 марта</button>
 </div>
-<div id="birthdayPage" class="page active">
+<div id="birthdayPage" class="page">
     <section class="hero">
       <div class="hero-inner">
         <div>
@@ -509,8 +514,9 @@ html, body{
 </div>
 <footer>
       Сделано с чувствами к тебе ❤️
+  </footer>
   </div>
-    <div id="marchPage" class="page">
+    <div id="marchPage" class="page active">
   <section class="hero">
     <div class="hero-inner">
       <div>
@@ -565,7 +571,6 @@ html, body{
     </div>
   </section>
 </div>
-    </footer>
     <!-- Секретное сообщение (тост) -->
 <div id="toast" aria-live="polite">Ты нашла секретный уровень моей любви ❤️</div>
   </div>
