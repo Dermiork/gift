@@ -391,7 +391,7 @@ html, body{
       </div>
     </header>
     <div class="tabs">
-  <button class="tab-btn active" type="button" onclick="showPage('birthdayPage', this)">День рождения</button>
+  <button class="tab-btn" type="button" onclick="showPage('birthdayPage', this)">День рождения</button>
   <button class="tab-btn" type="button" onclick="showPage('marchPage', this)">8 марта</button>
 </div>
 <div id="birthdayPage" class="page">
@@ -622,31 +622,40 @@ html, body{
     const copyLink = document.getElementById("copyLink");
     const toggleMusic = document.getElementById("toggleMusic");
     const beautyBtn = document.getElementById("beautyBtn");
-function showPage(pageId, btn){
-  document.querySelectorAll('.page').forEach(page => {
-    page.classList.remove('active');
+<script>
+  function showPage(pageId, btn = null) {
+    const pages = document.querySelectorAll('.page');
+    const buttons = document.querySelectorAll('.tab-btn');
+
+    pages.forEach(page => page.classList.remove('active'));
+    buttons.forEach(button => button.classList.remove('active'));
+
+    const activePage = document.getElementById(pageId);
+    if (activePage) {
+      activePage.classList.add('active');
+    }
+
+    if (btn) {
+      btn.classList.add('active');
+    } else {
+      const pageOrder = ['birthdayPage', 'marchPage'];
+      const index = pageOrder.indexOf(pageId);
+      if (index !== -1 && buttons[index]) {
+        buttons[index].classList.add('active');
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const activePage = document.querySelector('.page.active');
+
+    if (activePage) {
+      showPage(activePage.id);
+    } else {
+      showPage('birthdayPage');
+    }
   });
-
-  document.querySelectorAll('.tab-btn').forEach(button => {
-    button.classList.remove('active');
-  });
-
-  document.getElementById(pageId)?.classList.add('active');
-  btn.classList.add('active');
-}
-    
-beautyBtn?.addEventListener("click", () => {
-  burstHearts?.(14);
-  showToast("подтверждено ✔ 😌");
-});
-    const audio = document.getElementById("bgm");
-    const launchScreen = document.getElementById("launchScreen");
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    launchScreen?.classList.add("hide");
-  }, 1300);
-});
+</script>
 
 const isStandalone =
   window.matchMedia('(display-mode: standalone)').matches ||
