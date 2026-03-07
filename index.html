@@ -825,7 +825,7 @@ html, body{
   </div>
 
   <audio id="birthdayMusic" loop>
-  <source src="birthday.mp3" type="audio/mpeg">
+  <source src="birthdayMusic.mp3" type="audio/mpeg">
 </audio>
 
 <audio id="marchMusic" loop>
@@ -909,7 +909,12 @@ if(pageId === "marchPage"){
   marchMusic.catch(()=>{});
 }
 }
+function getCurrentMusic() {
+  const activePage = document.querySelector('.page.active');
 
+  if (activePage?.id === "marchPage") return marchMusic;
+  return birthdayMusic;
+}
 function hideLaunchScreen() {
   launchScreen?.classList.add("hide");
 }
@@ -973,31 +978,28 @@ document.addEventListener("touchend", (e) => {
 let musicStarted = false;
 
 function startMusicWithDelay(delayMs = 2200, targetVol = 0.22) {
-  if (!audio || musicStarted) return;
+  const currentMusic = getCurrentMusic();
+  if (!currentMusic || musicStarted) return;
+
   musicStarted = true;
+  currentMusic.volume = 0;
 
-  audio.volume = 0;
-
-  // запускаем сразу (важно для iPhone)
-  audio.play().catch(()=>{
+  currentMusic.play().catch(() => {
     musicStarted = false;
     return;
   });
 
-  // а звук появится позже
   setTimeout(() => {
-
     let v = 0;
     const step = 0.008;
     const tickMs = 120;
 
     const fade = setInterval(() => {
       v = Math.min(targetVol, v + step);
-      audio.volume = v;
+      currentMusic.volume = v;
 
       if (v >= targetVol) clearInterval(fade);
     }, tickMs);
-
   }, delayMs);
 }
 
@@ -1129,15 +1131,18 @@ openGift.addEventListener("click", () => {
     setInterval(() => spawnHeart(), 9500);
 
 toggleMusic.addEventListener("click", async () => {
-  try{
-    if (audio.paused){
-      await audio.play();
+  const currentMusic = getCurrentMusic();
+
+  try {
+    if (currentMusic.paused) {
+      await currentMusic.play();
       toggleMusic.textContent = "♫ on";
     } else {
-      audio.pause();
+      birthdayMusic.pause();
+      marchMusic.pause();
       toggleMusic.textContent = "♫";
     }
-  }catch(e){
+  } catch (e) {
     alert("Музыка не загрузилась 🙂");
   }
 });
