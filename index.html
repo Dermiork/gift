@@ -687,7 +687,7 @@ html, body{
       Сделано с чувствами к тебе ❤️
   </footer>
   </div>
-<div id="marchPage" class="page">
+<div id="marchPage" class="page active">
 
   <div class="petals" aria-hidden="true">
     <span class="petal"></span>
@@ -780,7 +780,6 @@ html, body{
 
   <section class="mini-reasons">
     <div class="reason-card reveal-up">
-      <span class="reason-num">01</span>
       <h3>Ты даришь тепло</h3>
       <p>
         Даже на расстоянии от тебя
@@ -789,7 +788,6 @@ html, body{
     </div>
 
     <div class="reason-card reveal-up">
-      <span class="reason-num">02</span>
       <h3>Ты запоминаешься сердцу</h3>
       <p>
         Есть люди, о которых просто думаешь.
@@ -798,7 +796,6 @@ html, body{
     </div>
 
     <div class="reason-card reveal-up">
-      <span class="reason-num">03</span>
       <h3>Ты делаешь дни красивее</h3>
       <p>
         Просто потому, что существуешь.
@@ -822,15 +819,7 @@ html, body{
   </footer>
 
 </div>
-      <div class="card">
-        <h2>Маленькая пасхалка</h2>
-        <p>
-          Если читаешь это — значит, мне очень повезло, что ты у меня есть 🌸
-        </p>
-      </div>
-    </div>
-  </section>
-</div>
+
     <!-- Секретное сообщение (тост) -->
 <div id="toast" aria-live="polite">Ты нашла секретный уровень моей любви ❤️</div>
   </div>
@@ -920,7 +909,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (activePage) {
     showPage(activePage.id);
   } else {
-    showPage('birthdayPage');
+    showPage('marchPage');
   }
 });
 
@@ -1167,10 +1156,7 @@ if (window.DeviceMotionEvent) {
   });
 
 }
-    function showSecret(){
-const text = document.getElementById("secretText");
-text.style.opacity = "1";
-}
+
     function showSecret(){
   const secret = document.getElementById("secretText");
   const hug = document.getElementById("hugText");
