@@ -824,15 +824,13 @@ html, body{
 <div id="toast" aria-live="polite">Ты нашла секретный уровень моей любви ❤️</div>
   </div>
 
-  <audio id="bgm" loop>
-    <!--
-      Музыка по желанию:
-      1) положи рядом с этим файлом mp3 с названием music.mp3
-      2) раскомментируй строку ниже (удали <!-- и --> вокруг source)
-    -->
-<source src="music.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="birthdayMusic" loop>
+  <source src="birthday.mp3" type="audio/mpeg">
+</audio>
 
+<audio id="marchMusic" loop>
+  <source src="march8.mp3" type="audio/mpeg">
+</audio>
   <script>
     // =======================
     // Быстрая персонализация:
@@ -871,7 +869,8 @@ html, body{
     const copyLink = document.getElementById("copyLink");
    const toggleMusic = document.getElementById("toggleMusic");
 const beautyBtn = document.getElementById("beautyBtn");
-const audio = document.getElementById("bgm");
+const birthdayMusic = document.getElementById("birthdayMusic");
+const marchMusic = document.getElementById("marchMusic");
 const launchScreen = document.getElementById("launchScreen");
 
 function showPage(pageId, btn = null) {
@@ -893,8 +892,22 @@ function showPage(pageId, btn = null) {
     const index = pageOrder.indexOf(pageId);
     if (index !== -1 && buttons[index]) {
       buttons[index].classList.add('active');
+
     }
   }
+        // переключение музыки
+birthdayMusic.pause();
+marchMusic.pause();
+
+if(pageId === "birthdayPage"){
+  birthdayMusic.currentTime = 0;
+  birthday.catch(()=>{});
+}
+
+if(pageId === "marchPage"){
+  marchMusic.currentTime = 0;
+  marchMusic.catch(()=>{});
+}
 }
 
 function hideLaunchScreen() {
@@ -910,6 +923,9 @@ document.addEventListener('DOMContentLoaded', () => {
     showPage(activePage.id);
   } else {
     showPage('marchPage');
+    if(activePage.id === "marchPage"){
+  marchMusic.catch(()=>{});
+}
   }
 });
 
