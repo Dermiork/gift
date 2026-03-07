@@ -533,6 +533,96 @@ html, body{
     max-width:320px;
   }
 }
+    .global-ios-tip{
+  position:sticky;
+  top:14px;
+  z-index:50;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  margin:0 auto 18px;
+  padding:14px 16px;
+  max-width:1100px;
+  border-radius:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+  backdrop-filter:blur(10px);
+}
+
+.global-ios-tip.hidden{
+  display:none;
+}
+
+.global-ios-tip__icon{
+  flex:0 0 auto;
+  font-size:18px;
+  line-height:1.2;
+  margin-top:2px;
+}
+
+.global-ios-tip__text{
+  flex:1;
+  line-height:1.5;
+  color:#fff;
+}
+
+.global-ios-tip__close{
+  flex:0 0 auto;
+  width:34px;
+  height:34px;
+  border:none;
+  border-radius:12px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.global-ios-tip__close:hover{
+  background:rgba(255,255,255,.14);
+}
+
+.show-ios-tip{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:60;
+  display:none;
+  padding:10px 14px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg, #ff4d8d, #7c4dff);
+  color:#fff;
+  font-weight:700;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+  cursor:pointer;
+}
+
+.show-ios-tip.visible{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+
+@media (max-width: 640px){
+  .global-ios-tip{
+    top:10px;
+    padding:12px 14px;
+    border-radius:16px;
+  }
+
+  .global-ios-tip__text{
+    font-size:14px;
+  }
+
+  .show-ios-tip{
+    right:12px;
+    bottom:12px;
+    padding:9px 12px;
+    font-size:14px;
+  }
+}
   </style>
 </head>
 <body>
@@ -546,6 +636,22 @@ html, body{
 </div>
   <div id="hearts" aria-hidden="true"></div>
   <div class="wrap">
+    <div id="globalIosTip" class="global-ios-tip">
+  <div class="global-ios-tip__icon">📱</div>
+
+  <div class="global-ios-tip__text">
+    Чтобы открыть это как приложение на iPhone: нажми
+    <b>Поделиться</b> → <b>На экран «Домой»</b>.
+  </div>
+
+  <button id="closeIosTip" class="global-ios-tip__close" type="button" aria-label="Скрыть подсказку">
+    ✕
+  </button>
+</div>
+
+<button id="showIosTip" class="show-ios-tip" type="button" aria-label="Показать подсказку">
+  📱App
+</button>
     <header>
       <div class="brand">
         <span class="dot"></span>
@@ -674,12 +780,6 @@ html, body{
     box-shadow:0 15px 40px rgba(0,0,0,.35);
   ">
     Сделано специально для тебя ❤️
-  </div>
-</div>
-<div class="hint" style="margin-top:14px">
-  <div>📱</div>
-  <div>
-    Чтобы открыть это как приложение на iPhone: нажми <b>Поделиться</b> → <b>На экран «Домой»</b>.
   </div>
 </div>
 <footer>
@@ -1189,6 +1289,47 @@ function showHug(){
   if (secret) secret.classList.remove("show");
   if (hug) hug.classList.add("show");
 }
+const globalIosTip = document.getElementById("globalIosTip");
+const closeIosTip = document.getElementById("closeIosTip");
+const showIosTip = document.getElementById("showIosTip");
+
+const IOS_TIP_STORAGE_KEY = "iosTipHidden";
+
+function hideIosTip(save = true) {
+  globalIosTip?.classList.add("hidden");
+  showIosTip?.classList.add("visible");
+
+  if (save) {
+    localStorage.setItem(IOS_TIP_STORAGE_KEY, "1");
+  }
+}
+
+function showIosTipBlock(save = true) {
+  globalIosTip?.classList.remove("hidden");
+  showIosTip?.classList.remove("visible");
+
+  if (save) {
+    localStorage.setItem(IOS_TIP_STORAGE_KEY, "0");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const isHidden = localStorage.getItem(IOS_TIP_STORAGE_KEY) === "1";
+
+  if (isHidden) {
+    hideIosTip(false);
+  } else {
+    showIosTipBlock(false);
+  }
+});
+
+closeIosTip?.addEventListener("click", () => {
+  hideIosTip(true);
+});
+
+showIosTip?.addEventListener("click", () => {
+  showIosTipBlock(true);
+});
   </script>
 </body>
 </html>
