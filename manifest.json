@@ -1,0 +1,17 @@
+{
+  "name": "Для Солнышка",
+  "short_name": "Солнышко ♥",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b0b14",
+  "theme_color": "#0b0b14",
+  "description": "Маленький романтичный сюрприз от Андрея",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
