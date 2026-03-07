@@ -362,6 +362,177 @@ html, body{
 .page.active{
   display:block;
 }
+    .march-hero{
+  position:relative;
+  overflow:hidden;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  margin-bottom:16px;
+  font-size:14px;
+  letter-spacing:.3px;
+  backdrop-filter:blur(8px);
+}
+
+.lead{
+  max-width:760px;
+  margin:0 auto;
+}
+
+.march-actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:22px;
+}
+
+.secret-text{
+  margin-top:18px;
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity .35s ease, transform .35s ease;
+  pointer-events:none;
+}
+
+.secret-text.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.march-features{
+  margin-top:28px;
+}
+
+.letter-card,
+.wish-box{
+  position:relative;
+  max-width:900px;
+  margin:28px auto 0;
+  padding:28px;
+  border-radius:24px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 10px 35px rgba(0,0,0,.18);
+  backdrop-filter:blur(10px);
+}
+
+.letter-card h2,
+.wish-box h2{
+  margin-top:0;
+  margin-bottom:14px;
+}
+
+.mini-reasons{
+  max-width:1100px;
+  margin:28px auto 0;
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:18px;
+}
+
+.reason-card{
+  padding:22px;
+  border-radius:22px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 10px 30px rgba(0,0,0,.14);
+}
+
+.reason-num{
+  display:inline-block;
+  font-size:13px;
+  opacity:.7;
+  margin-bottom:10px;
+  letter-spacing:1px;
+}
+
+.reveal-up{
+  animation:revealUp .7s ease both;
+}
+
+@keyframes revealUp{
+  from{
+    opacity:0;
+    transform:translateY(18px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.petals{
+  pointer-events:none;
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+}
+
+.petal{
+  position:absolute;
+  top:-40px;
+  width:18px;
+  height:18px;
+  border-radius:14px 14px 14px 2px;
+  background:linear-gradient(135deg, rgba(255,192,220,.95), rgba(255,140,190,.7));
+  opacity:.8;
+  animation:fall linear infinite;
+  filter:blur(.2px);
+}
+
+.petal:nth-child(1){left:8%; animation-duration:10s; animation-delay:-1s; transform:scale(.9) rotate(15deg);}
+.petal:nth-child(2){left:18%; animation-duration:13s; animation-delay:-4s; transform:scale(1.1) rotate(35deg);}
+.petal:nth-child(3){left:31%; animation-duration:11s; animation-delay:-2s; transform:scale(.8) rotate(20deg);}
+.petal:nth-child(4){left:47%; animation-duration:15s; animation-delay:-6s; transform:scale(1) rotate(40deg);}
+.petal:nth-child(5){left:61%; animation-duration:12s; animation-delay:-3s; transform:scale(1.15) rotate(10deg);}
+.petal:nth-child(6){left:74%; animation-duration:14s; animation-delay:-7s; transform:scale(.95) rotate(28deg);}
+.petal:nth-child(7){left:86%; animation-duration:10.5s; animation-delay:-5s; transform:scale(.85) rotate(18deg);}
+.petal:nth-child(8){left:93%; animation-duration:12.5s; animation-delay:-8s; transform:scale(1.05) rotate(32deg);}
+
+@keyframes fall{
+  0%{
+    transform:translateY(-40px) translateX(0) rotate(0deg);
+    opacity:0;
+  }
+  10%{
+    opacity:.85;
+  }
+  100%{
+    transform:translateY(110vh) translateX(-40px) rotate(260deg);
+    opacity:0;
+  }
+}
+
+@media (max-width: 900px){
+  .mini-reasons{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width: 640px){
+  .letter-card,
+  .wish-box,
+  .reason-card{
+    padding:20px;
+    border-radius:18px;
+  }
+
+  .march-actions{
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .march-actions .btn{
+    width:100%;
+    max-width:320px;
+  }
+}
   </style>
 </head>
 <body>
@@ -516,52 +687,141 @@ html, body{
       Сделано с чувствами к тебе ❤️
   </footer>
   </div>
-    <div id="marchPage" class="page active">
-  <section class="hero">
-    <div class="hero-inner">
-      <div>
-        <h1>С 8 марта, <span>Солнышко</span> <span class="heart">♥</span></h1>
-        <p class="sub">
-          Сегодня ещё один повод напомнить тебе, какая ты красивая, нежная и особенная для меня 🌸
-        </p>
+<div id="marchPage" class="page">
 
-        <div class="chips">
-          <span class="chip">весна началась с тебя</span>
-          <span class="chip">ты очень красивая</span>
-          <span class="chip">и очень моя любимая</span>
-        </div>
-      </div>
+  <div class="petals" aria-hidden="true">
+    <span class="petal"></span>
+    <span class="petal"></span>
+    <span class="petal"></span>
+    <span class="petal"></span>
+    <span class="petal"></span>
+    <span class="petal"></span>
+    <span class="petal"></span>
+    <span class="petal"></span>
+  </div>
 
-      <aside class="side">
-        <h3>Моя мысль на сегодня</h3>
-        <div class="count">Если бы 8 марта было человеком — это была бы ты 🌷</div>
-        <div class="small">и да, это официальный комплимент</div>
-      </aside>
+  <section class="hero march-hero">
+    <div class="badge">🌸 С любовью для тебя</div>
+
+    <h1>С 8 марта, моя нежность</h1>
+
+    <p class="lead">
+      Я хотел сделать для тебя не просто страничку,
+      а маленькое тёплое место, в котором живут
+      забота, нежность и ещё одно напоминание о том,
+      какая ты особенная для меня.
+    </p>
+
+    <div class="march-actions">
+      <button class="btn primary" type="button" onclick="showSecret()">
+        Нажми, если ты самая красивая
+      </button>
+
+      <button class="btn ghost" type="button" onclick="showHug()">
+        Обнять тебя
+      </button>
     </div>
 
-    <div class="grid">
-      <div class="card full">
-        <h2>То, что я хочу тебе сказать</h2>
-        <p class="type">С 8 марта, моё солнышко ☀️
+    <p id="secretText" class="secret-text">
+      Я так и знал. Это была проверка.
+      Ты действительно самая красивая 🤍
+    </p>
 
-Я хочу, чтобы ты всегда улыбалась, чувствовала себя любимой и знала, что ты правда очень особенная для меня.
+    <p id="hugText" class="secret-text">
+      Считай, что я сейчас очень крепко и нежно тебя обнял 💗
+    </p>
+  </section>
 
-Ты делаешь мои дни теплее просто тем, что ты есть.
-Спасибо тебе за твою нежность, твою красоту, твою романтику — и за те чувства, которые ты во мне вызываешь.
+  <section class="features march-features">
+    <div class="feature">
+      <h3>🌷 Ты очень нежная</h3>
+      <p>
+        Иногда достаточно просто мысли о тебе,
+        чтобы внутри стало спокойнее и теплее.
+      </p>
+    </div>
 
-И если честно…
-ты бы очень красиво смотрелась с моими объятиями 😏💋</p>
-      </div>
+    <div class="feature">
+      <h3>✨ Ты невероятно красивая</h3>
+      <p>
+        Не только внешне.
+        В тебе есть та особенная красота,
+        которую чувствуешь сердцем.
+      </p>
+    </div>
 
-      <div class="card">
-        <h2>3 причины поздравить именно тебя</h2>
-        <p>
-          1) Потому что ты невероятно красивая.<br>
-          2) Потому что ты очень тёплая для моего сердца.<br>
-          3) Потому что без тебя этот март был бы не таким.
-        </p>
-      </div>
+    <div class="feature">
+      <h3>🤍 С тобой всё ощущается мягче</h3>
+      <p>
+        Даже обычный день рядом с мыслями о тебе
+        становится уютнее и светлее.
+      </p>
+    </div>
+  </section>
 
+  <section class="letter-card reveal-up">
+    <h2>То, что я хочу тебе сказать</h2>
+    <p>
+      В этот день можно говорить много красивых слов,
+      но мне хочется сказать самое искреннее.
+    </p>
+    <p>
+      Ты правда делаешь мир вокруг теплее.
+      И мне очень нравится мысль,
+      что именно ты есть в моей жизни,
+      в моих мыслях и в моём сердце.
+    </p>
+    <p>
+      Спасибо тебе за твою нежность,
+      за твою красоту, за твоё тепло
+      и просто за то, что ты — это ты.
+    </p>
+  </section>
+
+  <section class="mini-reasons">
+    <div class="reason-card reveal-up">
+      <span class="reason-num">01</span>
+      <h3>Ты даришь тепло</h3>
+      <p>
+        Даже на расстоянии от тебя
+        чувствуется что-то родное и светлое.
+      </p>
+    </div>
+
+    <div class="reason-card reveal-up">
+      <span class="reason-num">02</span>
+      <h3>Ты запоминаешься сердцу</h3>
+      <p>
+        Есть люди, о которых просто думаешь.
+        А есть ты — о тебе хочется думать чаще.
+      </p>
+    </div>
+
+    <div class="reason-card reveal-up">
+      <span class="reason-num">03</span>
+      <h3>Ты делаешь дни красивее</h3>
+      <p>
+        Просто потому, что существуешь.
+        И это уже очень много.
+      </p>
+    </div>
+  </section>
+
+  <section class="wish-box reveal-up">
+    <h2>Моё пожелание тебе сегодня</h2>
+    <p>
+      Пусть у тебя будет больше поводов улыбаться,
+      больше лёгкости внутри, больше нежности вокруг
+      и больше моментов, в которых ты чувствуешь,
+      какая ты любимая, ценная и прекрасная.
+    </p>
+  </section>
+
+  <footer>
+    Для самой красивой девочки — с теплом 🤍
+  </footer>
+
+</div>
       <div class="card">
         <h2>Маленькая пасхалка</h2>
         <p>
@@ -906,6 +1166,25 @@ if (window.DeviceMotionEvent) {
 
   });
 
+}
+    function showSecret(){
+const text = document.getElementById("secretText");
+text.style.opacity = "1";
+}
+    function showSecret(){
+  const secret = document.getElementById("secretText");
+  const hug = document.getElementById("hugText");
+
+  if (hug) hug.classList.remove("show");
+  if (secret) secret.classList.add("show");
+}
+
+function showHug(){
+  const secret = document.getElementById("secretText");
+  const hug = document.getElementById("hugText");
+
+  if (secret) secret.classList.remove("show");
+  if (hug) hug.classList.add("show");
 }
   </script>
 </body>
