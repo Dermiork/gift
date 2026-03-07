@@ -700,6 +700,11 @@ html, body{
               я делал это специально для тебя и немного волновался, понравится ли тебе 🙂
             </div>
           </div>
+          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+  <button id="enableMotionBtn" type="button" class="btn-ghost">
+    Включить реакцию на тряску
+  </button>
+</div>
         </div>
 
         <aside class="side">
@@ -977,6 +982,7 @@ const beautyBtn = document.getElementById("beautyBtn");
 const birthdayMusic = document.getElementById("birthdayMusic");
 const marchMusic = document.getElementById("marchMusic");
 const launchScreen = document.getElementById("launchScreen");
+    const enableMotionBtn = document.getElementById("enableMotionBtn");
 
 function showPage(pageId, btn = null) {
   const pages = document.querySelectorAll('.page');
@@ -1248,37 +1254,67 @@ toggleMusic.addEventListener("click", async () => {
     alert("Музыка не загрузилась 🙂");
   }
 });
-// магия при тряске телефона
-if (window.DeviceMotionEvent) {
+let motionEnabled = false;
+let motionHandlerAttached = false;
+let lastShakeTime = 0;
 
-  let lastShake = 0;
+async function enableMotionAccess() {
+  try {
+    if (
+      typeof DeviceMotionEvent !== "undefined" &&
+      typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+      const result = await DeviceMotionEvent.requestPermission();
 
-  window.addEventListener("devicemotion", function(event) {
-
-    const acc = event.accelerationIncludingGravity;
-
-    const total = Math.abs(acc.x) + Math.abs(acc.y) + Math.abs(acc.z);
-
-    if (total > 45) {
-
-      const now = Date.now();
-
-      if (now - lastShake > 2000) {
-
-        lastShake = now;
-
-        burstHearts(30);
-
-        if (typeof showToast === "function") {
-          showToast("Ты растрясла моё сердце ❤️");
-        }
-
+      if (result !== "granted") {
+        showToast("Доступ к движению не разрешён");
+        return;
       }
     }
 
-  });
+    startShakeListener();
+    motionEnabled = true;
 
+    if (enableMotionBtn) {
+      enableMotionBtn.disabled = true;
+      enableMotionBtn.textContent = "Реакция на тряску включена ♥";
+    }
+
+    showToast("Тряска включена ♥");
+  } catch (e) {
+    console.error(e);
+    showToast("Не удалось включить тряску");
+  }
 }
+
+function startShakeListener() {
+  if (motionHandlerAttached) return;
+  motionHandlerAttached = true;
+
+  window.addEventListener("devicemotion", handleShake, { passive: true });
+}
+
+function handleShake(event) {
+  const now = Date.now();
+  if (now - lastShakeTime < 1400) return;
+
+  const acc = event.accelerationIncludingGravity || event.acceleration;
+  if (!acc) return;
+
+  const x = Math.abs(acc.x || 0);
+  const y = Math.abs(acc.y || 0);
+  const z = Math.abs(acc.z || 0);
+
+  const total = x + y + z;
+
+  if (total > 45) {
+    lastShakeTime = now;
+    burstHearts(30);
+    showToast("Ты растрясла моё сердце ❤️");
+  }
+}
+
+enableMotionBtn?.addEventListener("click", enableMotionAccess);
 
     function showSecret(){
   const secret = document.getElementById("secretText");
