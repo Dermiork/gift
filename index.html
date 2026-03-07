@@ -899,14 +899,14 @@ function showPage(pageId, btn = null) {
 birthdayMusic.pause();
 marchMusic.pause();
 
-if(pageId === "birthdayPage"){
+if (pageId === "birthdayPage") {
   birthdayMusic.currentTime = 0;
-  birthday.catch(()=>{});
+  birthdayMusic.play().catch(() => {});
 }
 
-if(pageId === "marchPage"){
+if (pageId === "marchPage") {
   marchMusic.currentTime = 0;
-  marchMusic.catch(()=>{});
+  marchMusic.play().catch(() => {});
 }
 }
 function getCurrentMusic() {
@@ -928,8 +928,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showPage(activePage.id);
   } else {
     showPage('marchPage');
-    if(activePage.id === "marchPage"){
-  marchMusic.catch(()=>{});
 }
   }
 });
