@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="ru">
+<head>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Для Солнышка">
@@ -7,7 +8,6 @@
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="manifest" href="manifest.json">
-<head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Для Солнышка ♥</title>
@@ -96,13 +96,7 @@
     }
     @media (max-width:520px){
       .hero{padding:18px}
-    }
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, var(--card), var(--card2));
-      backdrop-filter: blur(12px);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
+      
     .hero::before{
       content:"";
       position:absolute;inset:-2px;
@@ -332,10 +326,40 @@ html, body{
   .chip{font-size:12.5px}
   .type{font-size:16px}
 }
+      .tabs{
+  display:flex;
+  gap:10px;
+  margin:0 0 18px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.tab-btn{
+  border:1px solid #ffffff24;
+  background:#ffffff10;
+  color:#fff;
+  padding:10px 16px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:600;
+  box-shadow:none;
+}
+
+.tab-btn.active{
+  background:linear-gradient(135deg, #ff4d8d, #7c4dff);
+  border:none;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
   </style>
 </head>
 <body>
-  <div class="wrap">
   <div id="launchScreen" aria-hidden="true">
   <div class="launch-card">
     <span class="launch-heart">❤</span>
@@ -351,7 +375,7 @@ html, body{
         <span class="dot"></span>
         <div>
           <strong>Мини‑сайт‑подарок</strong><br>
-          <span "font-size:12.5px;color:var(--muted)">сделано одним влюблённым человеком</span>
+          <span style="font-size:12.5px;color:var(--muted)">сделано одним влюблённым человеком</span>
         </div>
       </div>
 
@@ -361,7 +385,11 @@ html, body{
         <button id="openGift">Открыть подарок</button>
       </div>
     </header>
-
+    <div class="tabs">
+  <button class="tab-btn active" type="button" onclick="showPage('birthdayPage', this)">День рождения</button>
+  <button class="tab-btn" type="button" onclick="showPage('marchPage', this)">8 марта</button>
+</div>
+<div id="birthdayPage" class="page active">
     <section class="hero">
       <div class="hero-inner">
         <div>
@@ -481,6 +509,62 @@ html, body{
 </div>
 <footer>
       Сделано с чувствами к тебе ❤️
+  </div>
+    <div id="marchPage" class="page">
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <h1>С 8 марта, <span>Солнышко</span> <span class="heart">♥</span></h1>
+        <p class="sub">
+          Сегодня ещё один повод напомнить тебе, какая ты красивая, нежная и особенная для меня 🌸
+        </p>
+
+        <div class="chips">
+          <span class="chip">весна началась с тебя</span>
+          <span class="chip">ты очень красивая</span>
+          <span class="chip">и очень моя любимая</span>
+        </div>
+      </div>
+
+      <aside class="side">
+        <h3>Моя мысль на сегодня</h3>
+        <div class="count">Если бы 8 марта было человеком — это была бы ты 🌷</div>
+        <div class="small">и да, это официальный комплимент</div>
+      </aside>
+    </div>
+
+    <div class="grid">
+      <div class="card full">
+        <h2>То, что я хочу тебе сказать</h2>
+        <p class="type">С 8 марта, моё солнышко ☀️
+
+Я хочу, чтобы ты всегда улыбалась, чувствовала себя любимой и знала, что ты правда очень особенная для меня.
+
+Ты делаешь мои дни теплее просто тем, что ты есть.
+Спасибо тебе за твою нежность, твою красоту, твою романтику — и за те чувства, которые ты во мне вызываешь.
+
+И если честно…
+ты бы очень красиво смотрелась с моими объятиями 😏💋</p>
+      </div>
+
+      <div class="card">
+        <h2>3 причины поздравить именно тебя</h2>
+        <p>
+          1) Потому что ты невероятно красивая.<br>
+          2) Потому что ты очень тёплая для моего сердца.<br>
+          3) Потому что без тебя этот март был бы не таким.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2>Маленькая пасхалка</h2>
+        <p>
+          Если читаешь это — значит, мне очень повезло, что ты у меня есть 🌸
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
     </footer>
     <!-- Секретное сообщение (тост) -->
 <div id="toast" aria-live="polite">Ты нашла секретный уровень моей любви ❤️</div>
@@ -523,7 +607,6 @@ html, body{
     // Логика страницы:
     // =======================
     const herNameEl = document.getElementById("herName");
-    const authorEl = document.getElementById("authorName");
     const countText = document.getElementById("countText");
     const revealBtn = document.getElementById("revealBtn");
     const revealFast = document.getElementById("revealFast");
@@ -534,7 +617,19 @@ html, body{
     const copyLink = document.getElementById("copyLink");
     const toggleMusic = document.getElementById("toggleMusic");
     const beautyBtn = document.getElementById("beautyBtn");
+function showPage(pageId, btn){
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+  });
 
+  document.querySelectorAll('.tab-btn').forEach(button => {
+    button.classList.remove('active');
+  });
+
+  document.getElementById(pageId)?.classList.add('active');
+  btn.classList.add('active');
+}
+    
 beautyBtn?.addEventListener("click", () => {
   burstHearts?.(14);
   showToast("подтверждено ✔ 😌");
@@ -675,7 +770,6 @@ document.addEventListener("touchmove", (e) => {
 
 
     herNameEl.textContent = HER_NAME;
-    if(authorEl) authorEl.textContent = AUTHOR_NAME;
 
     function daysSince(dateStr){
       const d = new Date(dateStr + "T00:00:00");
