@@ -43,6 +43,9 @@
       margin:10px 0 22px;
       flex-wrap:wrap;
     }
+    .wrap.magic-shake{
+  animation:softShake .42s ease;
+}
     @media (max-width:520px){
       header{justify-content:center}
       .brand{width:100%;justify-content:center}
@@ -218,6 +221,14 @@
       animation: floatUp 2.6s ease-in forwards;
       will-change: transform, opacity;
     }
+    @keyframes softShake{
+  0%   { transform: translate3d(0, 0, 0); }
+  20%  { transform: translate3d(-2px, 1px, 0) rotate(-0.4deg); }
+  40%  { transform: translate3d(2px, -1px, 0) rotate(0.4deg); }
+  60%  { transform: translate3d(-1px, 1px, 0) rotate(-0.25deg); }
+  80%  { transform: translate3d(1px, -1px, 0) rotate(0.25deg); }
+  100% { transform: translate3d(0, 0, 0); }
+}
     @keyframes floatUp{
       0%{opacity:0;transform:translate(-50%, 12px) scale(.9) rotate(-6deg)}
       10%{opacity:1}
@@ -250,6 +261,94 @@
   opacity: 1;
   transform: translateX(-50%) translateY(0);
   transition: opacity .2s ease, transform .2s ease;
+}
+    .motion-prompt{
+  position:fixed;
+  inset:0;
+  z-index:85;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(8,10,20,.58);
+  backdrop-filter:blur(10px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+}
+
+.motion-prompt.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.motion-prompt__card{
+  position:relative;
+  width:min(92vw, 430px);
+  padding:24px 20px 20px;
+  border-radius:24px;
+  background:
+    radial-gradient(500px 220px at 20% 10%, rgba(255,77,141,.16), transparent 60%),
+    radial-gradient(500px 240px at 80% 90%, rgba(124,77,255,.16), transparent 60%),
+    linear-gradient(180deg, rgba(20,22,38,.96), rgba(14,16,28,.96));
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 24px 70px rgba(0,0,0,.38);
+  text-align:center;
+}
+
+.motion-prompt__icon{
+  font-size:34px;
+  margin-bottom:10px;
+}
+
+.motion-prompt__title{
+  margin:0 0 10px;
+  font-size:22px;
+}
+
+.motion-prompt__text{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+  font-size:15.5px;
+}
+
+.motion-prompt__actions{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.motion-prompt__close{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:34px;
+  height:34px;
+  border:none;
+  border-radius:12px;
+  background:#ffffff12;
+  color:#fff;
+  cursor:pointer;
+  font-size:22px;
+  line-height:1;
+}
+
+.motion-prompt__close:hover{
+  background:#ffffff1c;
+}
+
+@media (max-width:640px){
+  .motion-prompt__card{
+    padding:22px 16px 18px;
+    border-radius:20px;
+  }
+
+  .motion-prompt__title{
+    font-size:20px;
+  }
 }
     /* App-like launch screen */
 #launchScreen{
@@ -640,6 +739,24 @@ html, body{
     <div class="launch-dots"><span></span><span></span><span></span></div>
   </div>
 </div>
+  <div id="motionPrompt" class="motion-prompt" aria-hidden="true">
+  <div class="motion-prompt__card">
+    <button id="closeMotionPrompt" class="motion-prompt__close" type="button" aria-label="Закрыть">
+      &times;
+    </button>
+
+    <div class="motion-prompt__icon">💞</div>
+    <h3 class="motion-prompt__title">Маленькая магия для тебя</h3>
+    <div class="motion-prompt__actions">
+      <button id="enableMotionBtn" type="button">
+        Включить
+      </button>
+      <button id="laterMotionBtn" type="button" class="btn-ghost">
+        Позже
+      </button>
+    </div>
+  </div>
+</div>
   <div id="hearts" aria-hidden="true"></div>
   <div class="wrap">
     <div id="globalIosTip" class="global-ios-tip">
@@ -700,11 +817,6 @@ html, body{
               я делал это специально для тебя и немного волновался, понравится ли тебе 🙂
             </div>
           </div>
-          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
-  <button id="enableMotionBtn" type="button" class="btn-ghost">
-    Включить реакцию на тряску
-  </button>
-</div>
         </div>
 
         <aside class="side">
@@ -982,7 +1094,10 @@ const beautyBtn = document.getElementById("beautyBtn");
 const birthdayMusic = document.getElementById("birthdayMusic");
 const marchMusic = document.getElementById("marchMusic");
 const launchScreen = document.getElementById("launchScreen");
-    const enableMotionBtn = document.getElementById("enableMotionBtn");
+const enableMotionBtn = document.getElementById("enableMotionBtn");
+const motionPrompt = document.getElementById("motionPrompt");
+const closeMotionPrompt = document.getElementById("closeMotionPrompt");
+const laterMotionBtn = document.getElementById("laterMotionBtn");
 
 function showPage(pageId, btn = null) {
   const pages = document.querySelectorAll('.page');
@@ -1060,7 +1175,40 @@ function showToast(text){
   toast.classList.add("show");
   setTimeout(()=>toast.classList.remove("show"), 2400);
 }
+function hideMotionPrompt(save = true) {
+  motionPrompt?.classList.remove("show");
+  motionPrompt?.setAttribute("aria-hidden", "true");
 
+  if (save) {
+    localStorage.setItem(MOTION_PROMPT_HIDDEN_KEY, "1");
+  }
+}
+
+function showMotionPrompt(save = false) {
+  const isIosTipHidden = localStorage.getItem(IOS_TIP_STORAGE_KEY) === "1";
+  if (!isIosTipHidden) return;
+
+  motionPrompt?.classList.add("show");
+  motionPrompt?.setAttribute("aria-hidden", "false");
+
+  if (save) {
+    localStorage.setItem(MOTION_PROMPT_HIDDEN_KEY, "0");
+  }
+}
+    function celebrateMotionEnabled() {
+  const wrap = document.querySelector(".wrap");
+
+  wrap?.classList.remove("magic-shake");
+  void wrap?.offsetWidth;
+  wrap?.classList.add("magic-shake");
+
+  burstHearts(26);
+  showToast("Теперь телефон может отвечать на твои движения ♥");
+
+  setTimeout(() => {
+    wrap?.classList.remove("magic-shake");
+  }, 450);
+}
 function registerTap(){
   tapCount++;
   clearTimeout(tapTimer);
@@ -1272,15 +1420,18 @@ async function enableMotionAccess() {
       }
     }
 
-    startShakeListener();
-    motionEnabled = true;
+startShakeListener();
+motionEnabled = true;
+localStorage.setItem(MOTION_ENABLED_KEY, "1");
+hideMotionPrompt(true);
 
-    if (enableMotionBtn) {
-      enableMotionBtn.disabled = true;
-      enableMotionBtn.textContent = "Реакция на тряску включена ♥";
-    }
+if (enableMotionBtn) {
+  enableMotionBtn.disabled = true;
+  enableMotionBtn.textContent = "Включено ♥";
+}
 
-    showToast("Тряска включена ♥");
+celebrateMotionEnabled();
+    
   } catch (e) {
     console.error(e);
     showToast("Не удалось включить тряску");
@@ -1336,7 +1487,8 @@ const closeIosTip = document.getElementById("closeIosTip");
 const showIosTip = document.getElementById("showIosTip");
 
 const IOS_TIP_STORAGE_KEY = "iosTipHidden";
-
+const MOTION_PROMPT_HIDDEN_KEY = "motionPromptHidden";
+const MOTION_ENABLED_KEY = "motionEnabled";
 function hideIosTip(save = true) {
   globalIosTip?.classList.add("hidden");
   showIosTip?.classList.add("visible");
@@ -1356,21 +1508,62 @@ function showIosTipBlock(save = true) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const isHidden = localStorage.getItem(IOS_TIP_STORAGE_KEY) === "1";
+  const isIosTipHidden = localStorage.getItem(IOS_TIP_STORAGE_KEY) === "1";
+  const motionWasEnabled = localStorage.getItem(MOTION_ENABLED_KEY) === "1";
+  const motionPromptHidden = localStorage.getItem(MOTION_PROMPT_HIDDEN_KEY) === "1";
 
-  if (isHidden) {
+  if (isIosTipHidden) {
     hideIosTip(false);
   } else {
     showIosTipBlock(false);
+  }
+
+  if (motionWasEnabled) {
+    motionEnabled = true;
+    startShakeListener();
+    hideMotionPrompt(false);
+
+    if (enableMotionBtn) {
+      enableMotionBtn.disabled = true;
+      enableMotionBtn.textContent = "Включено ♥";
+    }
+
+    return;
+  }
+
+  if (!isIosTipHidden) {
+    hideMotionPrompt(false);
+    return;
+  }
+
+  if (!motionPromptHidden) {
+    setTimeout(() => showMotionPrompt(false), 650);
+  } else {
+    hideMotionPrompt(false);
   }
 });
 
 closeIosTip?.addEventListener("click", () => {
   hideIosTip(true);
+
+  const motionWasEnabled = localStorage.getItem(MOTION_ENABLED_KEY) === "1";
+  const motionPromptHidden = localStorage.getItem(MOTION_PROMPT_HIDDEN_KEY) === "1";
+
+  if (!motionWasEnabled && !motionPromptHidden) {
+    setTimeout(() => showMotionPrompt(false), 650);
+  }
 });
 
 showIosTip?.addEventListener("click", () => {
+  hideMotionPrompt(false);
   showIosTipBlock(true);
+});
+    closeMotionPrompt?.addEventListener("click", () => {
+  hideMotionPrompt(true);
+});
+
+laterMotionBtn?.addEventListener("click", () => {
+  hideMotionPrompt(true);
 });
   </script>
 </body>
