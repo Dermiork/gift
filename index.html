@@ -2,14 +2,21 @@
 <html lang="ru">
 <head>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Для Солнышка">
+<meta name="application-name" content="Для Солнышка">
 <meta name="theme-color" content="#0b0b14">
+
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="manifest" href="manifest.json">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<link rel="apple-touch-startup-image" href="splash-1179x2556-iphone14pro-portrait.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="splash-2556x1179-iphone14pro-landscape.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Для Солнышка ♥</title>
   <style>
     :root{
@@ -37,7 +44,14 @@
         linear-gradient(180deg, var(--bg1), var(--bg2));
       overflow-x:hidden;
     }
-    .wrap{max-width:980px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) 60px calc(16px + env(safe-area-inset-left))}
+    .wrap{
+  max-width:980px;
+  margin:0 auto;
+  padding:calc(18px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) 60px calc(16px + env(safe-area-inset-left));
+
+  padding-top: max(18px, env(safe-area-inset-top));
+  padding-bottom: max(18px, env(safe-area-inset-bottom));
+}
     header{
       display:flex;align-items:center;justify-content:space-between;gap:14px;
       margin:10px 0 22px;
@@ -423,6 +437,10 @@
 html, body{
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 @media (max-width:520px){
@@ -430,7 +448,7 @@ html, body{
   .chip{font-size:12.5px}
   .type{font-size:16px}
 }
-      .tabs{
+.tabs{
   display:flex;
   gap:10px;
   margin:0 0 18px;
@@ -447,19 +465,238 @@ html, body{
   cursor:pointer;
   font-weight:600;
   box-shadow:none;
+  transition:transform .18s ease, background .22s ease, border-color .22s ease, opacity .22s ease;
+}
+
+.tab-btn:hover{
+  transform:translateY(-1px);
 }
 
 .tab-btn.active{
   background:linear-gradient(135deg, #ff4d8d, #7c4dff);
-  border:none;
+  border-color:transparent;
+}
+
+.pages{
+  position:relative;
+  min-height:520px;
 }
 
 .page{
-  display:none;
+  position:absolute;
+  inset:0;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(18px) scale(.985);
+  transition:
+    opacity .38s ease,
+    transform .38s ease,
+    visibility .38s ease;
+  pointer-events:none;
 }
 
 .page.active{
+  position:relative;
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
+
+.page-fill{
+  min-height:calc(100vh - 170px);
+  display:flex;
+  flex-direction:column;
+}
+
+.page-fill footer{
+  margin-top:auto;
+}
+
+.page.is-leaving{
+  opacity:0;
+  transform:translateY(-10px) scale(.99);
+  pointer-events:none;
+}
+
+/* Главная страница */
+.home-hero{
+  text-align:center;
+  padding:34px 24px;
+  animation:fadeUp .6s ease;
+}
+
+.home-badge{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  margin-bottom:16px;
+  font-size:14px;
+  letter-spacing:.3px;
+  backdrop-filter:blur(8px);
+}
+
+.home-sub{
+  max-width:760px;
+  margin:0 auto 18px;
+  color:var(--muted);
+  line-height:1.7;
+  font-size:clamp(15px, 1.8vw, 18px);
+}
+
+.home-actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:22px;
+}
+
+.home-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:14px;
+  margin-top:18px;
+}
+
+.home-card{
+  grid-column:span 4;
+  padding:20px;
+  border-radius:20px;
+  background:linear-gradient(180deg, #ffffff10, #ffffff0b);
+  border:1px solid #ffffff14;
+  box-shadow:0 14px 40px rgba(0,0,0,.25);
+}
+
+.home-card h3{
+  margin:0 0 10px;
+  font-size:18px;
+}
+
+.home-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.home-card.full{
+  grid-column:span 12;
+}
+
+@media (max-width:900px){
+  .home-card{
+    grid-column:span 12;
+  }
+}
+
+.mood-box{
+  margin-top:18px;
+  padding:18px;
+  border-radius:18px;
+  background:#ffffff0b;
+  border:1px solid #ffffff14;
+}
+
+.mood-text{
+  font-size:17px;
+  line-height:1.7;
+  color:#fff;
+}
+
+.sparkle-btn{
+  margin-top:14px;
+}
+
+.nav-cards{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  margin-top:18px;
+}
+
+.nav-card-btn{
+  width:100%;
+  text-align:left;
+  padding:20px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  color:#fff;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+}
+
+.nav-card-btn strong{
   display:block;
+  margin-bottom:8px;
+  font-size:18px;
+}
+
+.nav-card-btn span{
+  color:var(--muted);
+  line-height:1.55;
+  font-weight:500;
+}
+
+@media (max-width:700px){
+  .nav-cards{
+    grid-template-columns:1fr;
+  }
+}
+
+.mini-gift{
+  margin-top:18px;
+  padding:24px;
+  border-radius:24px;
+  text-align:center;
+  background:
+    radial-gradient(500px 220px at 20% 20%, #ff4d8d24, transparent 60%),
+    radial-gradient(500px 260px at 80% 70%, #7c4dff24, transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 14px 40px rgba(0,0,0,.25);
+}
+
+.mini-gift-box{
+  margin:18px auto 0;
+  max-width:560px;
+  padding:22px 22px;
+  border-radius:18px;
+  background:rgba(12,12,24,.72);
+  border:1px dashed rgba(255,255,255,.18);
+  display:none;
+}
+
+.mini-gift-box.show{
+  display:block;
+  animation:miniGiftReveal .35s ease;
+}
+
+.mini-gift-box .type{
+  font-size:15px;
+  line-height:1.75;
+  text-align:center;
+  max-width:420px;
+  margin:0 auto;
+  white-space:normal;
+  word-break:normal;
+  overflow-wrap:normal;
+}
+
+@media (max-width:640px){
+  .home-hero{
+    padding:22px 18px;
+  }
+
+  .nav-card-btn{
+    padding:18px;
+  }
+
+  .mini-gift{
+    padding:18px;
+    border-radius:20px;
+  }
 }
     .march-hero{
   position:relative;
@@ -563,6 +800,28 @@ html, body{
   to{
     opacity:1;
     transform:translateY(0);
+  }
+}
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(14px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes miniGiftReveal{
+  0%{
+    opacity:0;
+    transform:translateY(10px) scale(.98);
+  }
+  100%{
+    opacity:1;
+    transform:translateY(0) scale(1);
   }
 }
 
@@ -789,11 +1048,106 @@ html, body{
         <button id="copyLink" class="btn-ghost" title="Скопировать текст-поздравление">Копировать</button>
       </div>
     </header>
-    <div class="tabs">
+<div class="tabs">
+  <button class="tab-btn" type="button" onclick="showPage('homePage', this)">Главная</button>
   <button class="tab-btn" type="button" onclick="showPage('birthdayPage', this)">День рождения</button>
   <button class="tab-btn" type="button" onclick="showPage('marchPage', this)">8 марта</button>
 </div>
-<div id="birthdayPage" class="page">
+
+<div class="pages">
+  <div id="homePage" class="page active page-fill">
+    <section class="hero home-hero">
+      <div class="home-badge">♥ маленькое место тепла и нежности</div>
+
+      <h1>Привет, моё Солнышко <span class="heart">♥</span></h1>
+
+      <p class="home-sub">
+        Это не страница “по поводу даты”.
+        Это просто маленькое тёплое место для тебя —
+        чтобы ты могла сюда зайти в любой день,
+        улыбнуться, почувствовать нежность
+        и вспомнить, что о тебе думают с любовью.
+      </p>
+
+      <div class="home-actions">
+        <button type="button" onclick="showPage('birthdayPage')">Перейти к подарку на день рождения</button>
+        <button type="button" class="btn-ghost" onclick="showPage('marchPage')">Перейти к 8 марта</button>
+      </div>
+
+      <div class="home-grid">
+        <div class="home-card">
+          <h3>Для хорошего дня</h3>
+          <p>
+            Даже если день обычный,
+            ты всё равно заслуживаешь чего-то мягкого,
+            красивого и сделанного специально для тебя.
+          </p>
+        </div>
+
+        <div class="home-card">
+          <h3>Для улыбки без повода</h3>
+          <p>
+            Иногда лучший повод —
+            это просто напомнить тебе,
+            какая ты милая, нежная и важная.
+          </p>
+        </div>
+
+        <div class="home-card">
+          <h3>Для ощущения “я рядом”</h3>
+          <p>
+            Пусть хотя бы эта страничка
+            создаёт чувство, будто между нами
+            расстояние становится немного меньше.
+          </p>
+        </div>
+
+        <div class="home-card full">
+          <h3>Небольшая милая штука для тебя</h3>
+          <div class="mood-box">
+            <div id="moodText" class="mood-text">
+              Нажми кнопку ниже — и я скажу тебе что-то тёплое просто так.
+            </div>
+            <button id="sparkleBtn" class="sparkle-btn" type="button">Сделать приятно Солнышку</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-cards">
+        <button class="nav-card-btn" type="button" onclick="showPage('birthdayPage')">
+          <strong>🎂 День рождения</strong>
+          <span>Страница с поздравлением, кнопкой “Открыть подарок”, музыкой и тёплым посланием.</span>
+        </button>
+
+        <button class="nav-card-btn" type="button" onclick="showPage('marchPage')">
+          <strong>🌸 8 марта</strong>
+          <span>Нежная весенняя страница с более мягким настроением и красивыми тёплыми словами.</span>
+        </button>
+      </div>
+
+      <div class="mini-gift">
+        <h2 style="margin-top:0">Маленький вход в мини-подарок</h2>
+        <p class="sub" style="margin-bottom:0">
+          Тут нет ничего громкого. Только кое-что очень простое:
+          если нажмёшь кнопку, я кое в чём снова признаюсь.
+        </p>
+
+        <div style="margin-top:16px">
+          <button id="openMiniGift" type="button">Открыть мини-подарок</button>
+        </div>
+
+        <div id="miniGiftBox" class="mini-gift-box">
+          <div class="type">Мне очень нравится, что ты есть. Даже без повода. Даже в самый обычный день. И особенно — просто потому что ты это ты ♥</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Просто чтобы порадовать тебя сегодня ♥
+    </footer>
+  </div>
+
+  <div id="birthdayPage" class="page page-fill">
     <section class="hero">
       <div class="hero-inner">
         <div>
@@ -909,7 +1263,7 @@ html, body{
       Сделано с чувствами к тебе ❤️
   </footer>
   </div>
-<div id="marchPage" class="page active">
+<div id="marchPage" class="page page-fill">
 
   <div class="petals" aria-hidden="true">
     <span class="petal"></span>
@@ -1041,9 +1395,9 @@ html, body{
   </footer>
 
 </div>
+</div>
 
-    <!-- Секретное сообщение (тост) -->
-<div id="toast" aria-live="polite">Ты нашла секретный уровень моей любви ❤️</div>
+<div id="toast" aria-live="polite"></div>
   </div>
 
   <audio id="birthdayMusic" loop>
@@ -1094,66 +1448,175 @@ const beautyBtn = document.getElementById("beautyBtn");
 const birthdayMusic = document.getElementById("birthdayMusic");
 const marchMusic = document.getElementById("marchMusic");
 const launchScreen = document.getElementById("launchScreen");
+const moodText = document.getElementById("moodText");
+const sparkleBtn = document.getElementById("sparkleBtn");
+const openMiniGift = document.getElementById("openMiniGift");
+const miniGiftBox = document.getElementById("miniGiftBox");
 const enableMotionBtn = document.getElementById("enableMotionBtn");
 const motionPrompt = document.getElementById("motionPrompt");
 const closeMotionPrompt = document.getElementById("closeMotionPrompt");
 const laterMotionBtn = document.getElementById("laterMotionBtn");
 
-function showPage(pageId, btn = null) {
-  const pages = document.querySelectorAll('.page');
+function updateActiveTab(pageId, btn = null) {
   const buttons = document.querySelectorAll('.tab-btn');
-
-  pages.forEach(page => page.classList.remove('active'));
   buttons.forEach(button => button.classList.remove('active'));
-
-  const activePage = document.getElementById(pageId);
-  if (activePage) {
-    activePage.classList.add('active');
-  }
 
   if (btn) {
     btn.classList.add('active');
-  } else {
-    const pageOrder = ['birthdayPage', 'marchPage'];
-    const index = pageOrder.indexOf(pageId);
-    if (index !== -1 && buttons[index]) {
-      buttons[index].classList.add('active');
-
-    }
+    return;
   }
-        // переключение музыки
-birthdayMusic.pause();
-marchMusic.pause();
 
-if (pageId === "birthdayPage") {
-  birthdayMusic.currentTime = 0;
-  birthdayMusic.play().catch(() => {});
+  const pageOrder = ['homePage', 'birthdayPage', 'marchPage'];
+  const index = pageOrder.indexOf(pageId);
+
+  if (index !== -1 && buttons[index]) {
+    buttons[index].classList.add('active');
+  }
 }
 
-if (pageId === "marchPage") {
-  marchMusic.currentTime = 0;
-  marchMusic.play().catch(() => {});
+function updateMusicButton() {
+  const currentMusic = getCurrentMusic();
+  toggleMusic.textContent = currentMusic && !currentMusic.paused ? "♫ on" : "♫";
 }
+
+function stopAllMusic(reset = false) {
+  [birthdayMusic, marchMusic].forEach(music => {
+    music.pause();
+    if (reset) music.currentTime = 0;
+  });
+}
+
+function playMusicForPage(pageId, forceAutoplay = false) {
+  stopAllMusic(true);
+
+  let targetMusic = null;
+
+  if (pageId === "birthdayPage") targetMusic = birthdayMusic;
+  if (pageId === "marchPage") targetMusic = marchMusic;
+
+  if (!targetMusic) {
+    updateMusicButton();
+    return;
+  }
+
+  if (forceAutoplay || musicStarted) {
+    targetMusic.play().catch(() => {});
+  }
+
+  updateMusicButton();
+}
+
+function showPage(pageId, btn = null) {
+  const currentPage = document.querySelector('.page.active');
+  const nextPage = document.getElementById(pageId);
+
+  if (!nextPage) return;
+  window.scrollTo({
+  top: 0,
+  behavior: "smooth"
+});
+  if (currentPage === nextPage) {
+    updateActiveTab(pageId, btn);
+    return;
+  }
+
+  updateActiveTab(pageId, btn);
+
+  if (currentPage) {
+    currentPage.classList.add('is-leaving');
+    currentPage.classList.remove('active');
+  }
+
+  requestAnimationFrame(() => {
+    nextPage.classList.add('active');
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll('.page.is-leaving').forEach(page => {
+      page.classList.remove('is-leaving');
+    });
+  }, 420);
+
+  playMusicForPage(pageId, false);
 }
 function getCurrentMusic() {
   const activePage = document.querySelector('.page.active');
 
+  if (activePage?.id === "birthdayPage") return birthdayMusic;
   if (activePage?.id === "marchPage") return marchMusic;
-  return birthdayMusic;
+  return null;
 }
 function hideLaunchScreen() {
   launchScreen?.classList.add("hide");
 }
+const SWEET_TEXTS = [
+  "Ты сейчас заслуживаешь самый нежный поцелуй в лобик ♥",
+  "Напоминание: ты очень красивая. Да, прямо сейчас тоже.",
+  "Пусть этот день будет к тебе мягким, как мои мысли о тебе.",
+  "Иногда мне просто хочется смотреть на тебя и улыбаться.",
+  "Ты умеешь делать мир уютнее одним только своим существованием.",
+  "Это страничка официально сообщает: ты солнышко.",
+  "Твоя улыбка — это самый короткий путь к моему хорошему настроению.",
+  "Иногда мне кажется, что ты создана из солнечного света и капли магии.",
+  "Ты заслуживаешь того, чтобы о тебе заботились так же сильно, как ты о других.",
+  "Официальное уведомление: уровень твоей милоты сегодня превысил все нормы.",
+  "Твои мысли — это целая вселенная, в которой безумно интересно гулять.",
+  "Просто хотел сказать, что мир стал чуточку уютнее, когда в нем появилась ты.",
+  "Ты — та самая песня, которую хочется ставить на повтор бесконечно.",
+  "Пусть этот вечер обнимет тебя так же нежно, как мои мысли о тебе.",
+  "В тебе есть особенный свет, который помогает мне не теряться в темноте.",
+  "Ты выглядишь невероятно, когда искренне чему-то удивляешься.",
+  "Напоминание: ты очень важная. Да, для меня — особенно.",
+  "Твоя доброта — это суперсила, даже если ты сама её не замечаешь.",
+  "Иногда достаточно просто знать, что ты где-то есть, чтобы на душе стало легче.",
+  "Ты умеешь превращать самый обычный день в маленькое приключение.",
+  "Пусть твои сны сегодня будут такими же сладкими, как твой смех.",
+  "Ты заслуживаешь самых теплых слов и самых искренних объятий.",
+  "Твой голос — это лучшее завершение любого, даже самого сложного дня.",
+  "Ты — причина, по которой я прямо сейчас улыбаюсь, вспоминая тебя.",
+  "В тебе столько глубины, что в ней хочется тонуть снова и снова.",
+  "Ты — это про уют, про тепло и про веру в то, что всё будет хорошо.",
+  "Напоминание: ты красива в любом своем состоянии и настроении.",
+  "Твоя искренность — это самая редкая и ценная вещь, которую я встречал.",
+  "Ты — ходячее вдохновение, даже когда просто пьешь кофе в пижаме.",
+  "Эта строчка официально сообщает: я очень рад, что мы знакомы.",
+  "Пусть завтрашний день будет к тебе так же благосклонен, как ты к людям.",
+  "Ты умеешь согревать одним своим присутствием в сети.",
+  "Просто береги себя, ладно? Ты слишком ценная, чтобы поступать иначе."
+];
 
+function showToast(text){
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+  toast.textContent = text;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2200);
+}
+
+sparkleBtn?.addEventListener("click", () => {
+  const text = SWEET_TEXTS[Math.floor(Math.random() * SWEET_TEXTS.length)];
+  if (moodText) moodText.textContent = text;
+  burstHearts(12);
+});
+
+openMiniGift?.addEventListener("click", () => {
+  miniGiftBox?.classList.add("show");
+  burstHearts(18);
+  showToast("Для тебя — просто так ♥");
+
+  if (openMiniGift) {
+    openMiniGift.disabled = true;
+    openMiniGift.textContent = "Уже открыто ♥";
+  }
+});
 document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(hideLaunchScreen, 1300);
+  updateActiveTab('homePage');
+  showPage('homePage');
 
-  const activePage = document.querySelector('.page.active');
-
-  if (activePage) {
-    showPage(activePage.id);
+  if (isStandalone) {
+    setTimeout(hideLaunchScreen, 900);
   } else {
-    showPage('marchPage');
+    setTimeout(hideLaunchScreen, 1200);
   }
 });
 
@@ -1361,13 +1824,14 @@ document.addEventListener("touchmove", (e) => {
     revealBtn.addEventListener("click", () => { burstHearts(14); typewrite(MAIN_TEXT); });
     revealFast.addEventListener("click", () => { burstHearts(10); showInstant(MAIN_TEXT); });
 openGift.addEventListener("click", () => {
+  musicStarted = true;
   startMusicWithDelay(2200, 0.22);
   burstHearts(22);
   document.getElementById("questBox")?.classList.add("show");
   document.getElementById("messageBlock").scrollIntoView({
-  behavior: "smooth",
-  block: "start"
-});
+    behavior: "smooth",
+    block: "start"
+  });
   typewrite(MAIN_TEXT);
 });
 
@@ -1390,14 +1854,16 @@ toggleMusic.addEventListener("click", async () => {
   const currentMusic = getCurrentMusic();
 
   try {
+    if (!currentMusic) return;
+
     if (currentMusic.paused) {
+      musicStarted = true;
       await currentMusic.play();
-      toggleMusic.textContent = "♫ on";
     } else {
-      birthdayMusic.pause();
-      marchMusic.pause();
-      toggleMusic.textContent = "♫";
+      stopAllMusic(false);
     }
+
+    updateMusicButton();
   } catch (e) {
     alert("Музыка не загрузилась 🙂");
   }
